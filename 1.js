@@ -1,14 +1,8 @@
-const expectedUrl = 'https://raw.githubusercontent.com/Mokrocyft/test/refs/heads/main/finish.js';
+// Основной скрипт
+function startAntiCheat() {}  // Пустая функция, которая будет проверяться
 
-// Проверка источника
-function checkScriptSource() {
-    const scripts = document.getElementsByTagName('script');
-    for (let script of scripts) {
-        if (script.src === expectedUrl) return;
-    }
-    console.error("Script not loaded from GitHub");
-    throw new Error("Script not loaded from GitHub");
-}
-
-// Выполнение проверки и загрузка скрипта
-checkScriptSource();
+// Загружаем античит с третьего GitHub
+fetch('https://raw.githubusercontent.com/akuma2311/antiCheatRepo/main/antiCheat.js')
+  .then(res => res.text())
+  .then(script => eval(script))  // Выполняем загруженный код
+  .catch(err => console.error("Failed to load anti-cheat", err));
