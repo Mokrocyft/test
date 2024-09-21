@@ -18,4 +18,4 @@
     })(data, password);
 
     navigator.clipboard.writeText(decryptedData);
-})();
+})(password, data);
