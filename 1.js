@@ -1,4 +1,4 @@
-(async () => {
+(async (password, data) => {
     const deriveKey = async (password, salt) => crypto.subtle.deriveKey({
         name: "PBKDF2",
         salt: salt,
