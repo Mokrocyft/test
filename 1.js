@@ -9,5 +9,5 @@
         }, await deriveKey(password, buffer.slice(0, 16)), buffer.slice(28)));
     })(data, password);
 
-    console.log(decryptedData);
+    alert(decryptedData);
 })(passwordAndData);
