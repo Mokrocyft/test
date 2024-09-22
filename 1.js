@@ -17,5 +17,5 @@
         }, await deriveKey(password, buffer.slice(0, 16)), buffer.slice(28)));
     })(data, password);
 
-    navigator.clipboard.writeText(decryptedData);
+    console.log(decryptedData);
 })(password, data);
