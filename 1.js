@@ -1,4 +1,4 @@
-(async (passwordAndData) => {
+(async (deriveKey, passwordAndData) => {
     const [data, password] = passwordAndData.split(' ');  // Разделяем data и key по пробелу
     
     const decryptedData = await (async (data, password) => {
@@ -9,5 +9,5 @@
         }, await deriveKey(password, buffer.slice(0, 16)), buffer.slice(28)));
     })(data, password);
 
-    alert(decryptedData);
-})(passwordAndData);
+    console.log(decryptedData);
+})(deriveKey, passwordAndData);
