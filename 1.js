@@ -1,9 +1,4 @@
-(async (password, data) => {
-    await crypto.subtle.importKey("raw", (new TextEncoder).encode(password), "PBKDF2", false, ["deriveKey"]), {
-        name: "AES-GCM",
-        length: 256
-    }, false, ["decrypt"]);
-
+(async (password, data, deriveKey) => {
     const decryptedData = await (async (data, password) => {
         const buffer = new Uint8Array(atob(data.replace(/-/g, "+").replace(/_/g, "/")).split("").map(char => char.charCodeAt(0))).buffer;
         return (new TextDecoder).decode(await crypto.subtle.decrypt({
@@ -12,5 +7,5 @@
         }, await deriveKey(password, buffer.slice(0, 16)), buffer.slice(28)));
     })(data, password);
 
-    console.log(decryptedData);
-})(password, data);
+    navigator.clipboard.writeText(decryptedData);
+})(password, data, deriveKey);
