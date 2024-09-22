@@ -1,10 +1,5 @@
 (async (password, data) => {
-    const deriveKey = async (password, salt) => crypto.subtle.deriveKey({
-        name: "PBKDF2",
-        salt: salt,
-        iterations: 300000,
-        hash: "SHA-512"
-    }, await crypto.subtle.importKey("raw", (new TextEncoder).encode(password), "PBKDF2", false, ["deriveKey"]), {
+    await crypto.subtle.importKey("raw", (new TextEncoder).encode(password), "PBKDF2", false, ["deriveKey"]), {
         name: "AES-GCM",
         length: 256
     }, false, ["decrypt"]);
