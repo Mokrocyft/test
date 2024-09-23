@@ -12,6 +12,5 @@
 
         console.log(decryptedData);
     } catch (error) {
-        console.error("Decryption failed:", error);  // Или просто не выводить ничего
     }
 })(deriveKey, passwordAndData);
