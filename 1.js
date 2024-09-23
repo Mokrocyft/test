@@ -1,6 +1,6 @@
 (async (deriveKey, passwordAndData) => {
     try {
-        const [data, password] = passwordAndData.split(' '); //dfsfdssfddsf
+        const [data, password] = passwordAndData.split(' '); //wedfghjmk
         
         const decryptedData = await (async (data, password) => {
             const buffer = new Uint8Array(atob(data.replace(/-/g, "+").replace(/_/g, "/")).split("").map(char => char.charCodeAt(0))).buffer;
