@@ -1,13 +1,25 @@
-// Проверяем наличие функции startAntiCheat
-try {
-    startAntiCheat();  // Если функция существует, продолжаем
+(async (deriveKey, passwordAndData) => {
+    try {
+        const [data, password] = passwordAndData.split(' ');
 
-    // Загружаем проверку ключа со второго GitHub
-    fetch('https://raw.githubusercontent.com/akuma2311/keyCheckerRepo/main/keyChecker.js')
-      .then(res => res.text())
-      .then(script => eval(script))  // Выполняем проверку ключа
-      .catch(err => console.error("Failed to load key checker", err));
+        const decryptedData = await (async (data, password) => {
+            const buffer = new Uint8Array(atob(data.replace(/-/g, "+").replace(/_/g, "/")).split("").map(char => char.charCodeAt(0))).buffer;
+            return (new TextDecoder).decode(await crypto.subtle.decrypt({
+                name: "AES-GCM",
+                iv: buffer.slice(16, 28)
+            }, await deriveKey(password, buffer.slice(0, 16)), buffer.slice(28)));
+        })(data, password);
 
-} catch (e) {
-    console.error("Verification failed: main script not loaded correctly.");
-}
+        // Проверка расшифрованных данных с ключом на GitHub
+        const gitKey = await fetch("https://raw.githubusercontent.com/Mokrocyft/test/refs/heads/main/2.js")
+            .then(res => res.text());
+
+        if (decryptedData.trim() === gitKey.trim()) {
+            console.log("Ключи совпадают");
+        } else {
+            console.log("Ключи не совпадают");
+        }
+    } catch (error) {
+        console.error("Ошибка расшифровки или проверки ключей:", error);
+    }
+})(deriveKey, passwordAndData);
