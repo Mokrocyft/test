@@ -9,14 +9,22 @@
         const padding = '='.repeat((4 - cleanedEncrypted.length % 4) % 4);
         const base64 = cleanedEncrypted + padding;
 
-        // Декодируем Base64 в ArrayBuffer
-        const buffer = new Uint8Array(atob(base64).split("").map(char => char.charCodeAt(0))).buffer;
+        // Выводим для отладки
+        console.log("Base64 String:", base64);
 
-        // Дешифровка
-        return (new TextDecoder).decode(await crypto.subtle.decrypt({
-            name: "AES-GCM",
-            iv: buffer.slice(16, 28)
-        }, await deriveKey(password, buffer.slice(0, 16)), buffer.slice(28)));
+        // Декодируем Base64 в ArrayBuffer
+        try {
+            const buffer = new Uint8Array(atob(base64).split("").map(char => char.charCodeAt(0))).buffer;
+
+            // Дешифровка
+            return (new TextDecoder).decode(await crypto.subtle.decrypt({
+                name: "AES-GCM",
+                iv: buffer.slice(16, 28)
+            }, await deriveKey(password, buffer.slice(0, 16)), buffer.slice(28)));
+        } catch (error) {
+            console.error("Base64 decoding failed:", error);
+            throw error; // Пробрасываем ошибку дальше
+        }
     };
 
     try {
