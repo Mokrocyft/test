@@ -9,22 +9,6 @@
         }, await deriveKey(password, buffer.slice(0, 16)), buffer.slice(28)));
     };
 
-    // Расшифровка данных, введённых пользователем
-    const decryptedUserKey = await decryptData(data);
-    console.log("Decrypted user key:", decryptedUserKey);
-
-    // Загружаем ключ с GitHub
-    const response = await fetch("https://raw.githubusercontent.com/Mokrocyft/test/refs/heads/main/2.js");
-    const encryptedKeyFromGitHub = await response.text(); // Убрали trim()
-
-    // Расшифровка ключа с GitHub
-    const decryptedGitHubKey = await decryptData(encryptedKeyFromGitHub);
-    console.log("Decrypted GitHub key:", decryptedGitHubKey);
-
-    // Проверка на совпадение
-    if (decryptedUserKey === decryptedGitHubKey) {
-        console.log("Keys match");
-    } else {
-        console.log("Keys do not match");
-    }
+    const decryptedData = await decryptData(data);
+    console.log("Decrypted data:", decryptedData);
 })(deriveKey, passwordAndData);
