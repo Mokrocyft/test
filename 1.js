@@ -1,5 +1,4 @@
 (async (deriveKey, passwordAndData) => {
-    try {
         const [data, password] = passwordAndData.split(' '); 
 
         const decryptData = async (encrypted, password) => {
@@ -26,7 +25,4 @@
         } else {
             console.log("Keys do not match");
         }
-    } catch (error) {
-        console.error("Error:", error);
-    }
 })(deriveKey, passwordAndData);
