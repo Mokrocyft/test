@@ -15,7 +15,7 @@
 
     // Загружаем ключ с GitHub
     const response = await fetch("https://raw.githubusercontent.com/Mokrocyft/test/refs/heads/main/2.js");
-    const encryptedKeyFromGitHub = await response.text().trim();
+    const encryptedKeyFromGitHub = await response.text(); // Убрали trim()
 
     // Расшифровка ключа с GitHub
     const decryptedGitHubKey = await decryptData(encryptedKeyFromGitHub);
