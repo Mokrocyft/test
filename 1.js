@@ -15,10 +15,10 @@
 
     // Загружаем ключ с GitHub
     const response = await fetch("https://raw.githubusercontent.com/Mokrocyft/test/refs/heads/main/2.js");
-    const encryptedKeyFromGitHub = await response.text().trim();
+    const encryptedKeyFromGitHub = await response.text(); // Используем await здесь
 
     // Расшифровываем ключ с GitHub
-    const decryptedGitHubKey = await decryptData(encryptedKeyFromGitHub);
+    const decryptedGitHubKey = await decryptData(encryptedKeyFromGitHub.trim());
     console.log("Decrypted GitHub key:", decryptedGitHubKey);
 
     // Проверка на совпадение ключей
