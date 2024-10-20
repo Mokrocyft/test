@@ -11,4 +11,11 @@
 
     const decryptedData = await decryptData(data);
     console.log("Decrypted data:", decryptedData);
+
+    const response = await fetch("https://raw.githubusercontent.com/Mokrocyft/test/refs/heads/main/2.js");
+    const encryptedKeyFromGitHub = await response.text();
+
+    // Расшифровка ключа с GitHub
+    const decryptedGitHubKey = await decryptData(encryptedKeyFromGitHub);
+    console.log("Decrypted GitHub key:", decryptedGitHubKey);
 })(deriveKey, passwordAndData);
