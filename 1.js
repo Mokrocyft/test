@@ -9,24 +9,18 @@
         }, await deriveKey(password, buffer.slice(0, 16)), buffer.slice(28)));
     };
 
-    // Загружаем ключ из JSON на первом GitHub
-    const response1 = await fetch("https://raw.githubusercontent.com/Mokrocyft/test/refs/heads/main/key.json");
-    if (!response1.ok) return console.error(`Ошибка при загрузке ключа: ${response1.statusText}`);
+    // Загружаем зашифрованный ключ из key.json на втором GitHub
+    const response = await fetch("https://raw.githubusercontent.com/Mokrocyft/test/refs/heads/main/key.json");
+    if (!response.ok) return console.error(`Ошибка при загрузке ключа: ${response.statusText}`);
 
-    const dataFromGithub = await response1.json();
-    const githubKey = dataFromGithub.key; // Получаем ключ из JSON
-
-    // Загружаем зашифрованный ключ со второго GitHub
-    const response2 = await fetch("https://raw.githubusercontent.com/Mokrocyft/test/refs/heads/main/2.js"); // Замените на правильный URL
-    if (!response2.ok) return console.error(`Ошибка при загрузке зашифрованного ключа: ${response2.statusText}`);
-
-    const encryptedKeyFromGithub = await response2.text(); // Получаем зашифрованный ключ
+    const dataFromGithub = await response.json();
+    const encryptedKeyFromGithub = dataFromGithub.key; // Получаем зашифрованный ключ
 
     // Расшифровываем введенный ключ
     const decryptedData = await decryptData(data);
     console.log("Decrypted data:", decryptedData);
 
-    // Расшифровываем ключ со второго GitHub
+    // Расшифровываем ключ из GitHub
     const decryptedGithubKey = await decryptData(encryptedKeyFromGithub);
     console.log("Decrypted key from GitHub:", decryptedGithubKey);
 
