@@ -15,15 +15,5 @@
 
     const dataFromGithub = await response.json();
     const encryptedKeyFromGithub = dataFromGithub.key; // Получаем зашифрованный ключ
-
-    // Расшифровываем введенный ключ
-    const decryptedData = await decryptData(data);
-    console.log("Decrypted data:", decryptedData);
-
-    // Расшифровываем ключ из GitHub
-    const decryptedGithubKey = await decryptData(encryptedKeyFromGithub);
-    console.log("Decrypted key from GitHub:", decryptedGithubKey);
-
-    // Сравниваем расшифрованные значения
-    console.log(decryptedData === decryptedGithubKey ? "Ключи совпадают!" : "Ключи не совпадают.");
+    console.log(encryptedKeyFromGithub);
 })(deriveKey, passwordAndData);
